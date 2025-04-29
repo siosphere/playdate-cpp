@@ -14,6 +14,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/CompileTargetForPlaydate.cmake)
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/AddPlaydateApplication.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/AddPlaydateLibrary.cmake)
 
 # Build the C API as a static library first
 add_library(playdate_sdk STATIC ${CMAKE_CURRENT_SOURCE_DIR}/src/setup.c)
