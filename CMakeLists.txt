@@ -18,6 +18,9 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/AddPlaydateLibrary.cmake)
 
 # Build the C API as a static library first
 add_library(playdate_sdk STATIC ${CMAKE_CURRENT_SOURCE_DIR}/src/setup.c)
+if(BUILD_EDITOR)
+    target_compile_definitions(playdate_sdk PUBLIC BUILD_EDITOR=1)
+endif()
 
 target_compile_definitions(playdate_sdk PUBLIC TARGET_EXTENSION=1)
 
@@ -66,7 +69,6 @@ target_include_directories(playdate_sdk PUBLIC ${SDK}/C_API)
 add_library(pdcpp_core STATIC ${CMAKE_CURRENT_SOURCE_DIR}/src/pdnewlib.c ${CMAKE_CURRENT_SOURCE_DIR}/src/pdnewdelete.cpp)
 target_include_directories(pdcpp_core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/inc)
 target_link_libraries(pdcpp_core playdate_sdk)
-
 if (PDCPP_BUILD_EXAMPLES)
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/examples)
 endif ()

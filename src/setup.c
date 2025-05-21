@@ -60,6 +60,7 @@ uint32_t* _bss_end __attribute__((section(".bss_end"))) = &bssEnd;
 
 #else
 
+#ifndef BUILD_EDITOR
 int eventHandlerShim(PlaydateAPI* playdate, PDSystemEvent event, uint32_t arg)
 {
     if ( event == kEventInit )
@@ -85,5 +86,5 @@ void  free(void* ptr )
 {
     pdrealloc(ptr,0);
 }
-
+#endif
 #endif
