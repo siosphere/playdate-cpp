@@ -67,11 +67,19 @@ function(add_playdate_application PLAYDATE_GAME_NAME)
                 set_property(TARGET ${PLAYDATE_GAME_NAME} PROPERTY XCODE_SCHEME_EXECUTABLE ${SDK}/bin/Playdate\ Simulator.app)
             endif()
 
-            add_custom_command(
-                TARGET ${PLAYDATE_GAME_NAME} POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -E copy
-                ${CMAKE_CURRENT_BINARY_DIR}/${BUILD_SUB_DIR}lib${PLAYDATE_GAME_NAME}.dylib
-                ${PDCPP_STAGING_DIR}/Source/pdex.dylib)
+            if(BUILD_EDITOR)
+                add_custom_command(
+                        TARGET ${PLAYDATE_GAME_NAME} POST_BUILD
+                        COMMAND ${CMAKE_COMMAND} -E copy
+                        ${CMAKE_BINARY_DIR}/bin/${BUILD_SUB_DIR}lib${PLAYDATE_GAME_NAME}.dylib
+                        ${PDCPP_STAGING_DIR}/Source/pdex.dylib)
+            else()
+                add_custom_command(
+                        TARGET ${PLAYDATE_GAME_NAME} POST_BUILD
+                        COMMAND ${CMAKE_COMMAND} -E copy
+                        ${CMAKE_CURRENT_BINARY_DIR}/${BUILD_SUB_DIR}lib${PLAYDATE_GAME_NAME}.dylib
+                        ${PDCPP_STAGING_DIR}/Source/pdex.dylib)
+            endif()
 
         elseif(UNIX)
             add_custom_command(

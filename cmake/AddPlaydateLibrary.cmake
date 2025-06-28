@@ -9,34 +9,6 @@ function(add_playdate_library PLAYDATE_GAME_NAME)
 
     if (TOOLCHAIN STREQUAL "armgcc")
         add_library(${PLAYDATE_GAME_NAME} STATIC)
-
-        #set_property(TARGET ${PLAYDATE_GAME_NAME} PROPERTY OUTPUT_NAME "${PLAYDATE_GAME_NAME}.elf")
-
-        #add_custom_command(
-        #        TARGET ${PLAYDATE_GAME_NAME} POST_BUILD
-        #        COMMAND ${CMAKE_COMMAND} -E copy
-        #        ${CMAKE_CURRENT_BINARY_DIR}/${BUILD_SUB_DIR}${PLAYDATE_GAME_NAME}.elf
-        #        ${PDCPP_STAGING_DIR}/Source/pdex.elf
-        #)
-
-        #add_custom_command(
-        #        TARGET ${PLAYDATE_GAME_NAME} POST_BUILD
-        #        COMMAND ${CMAKE_STRIP} --strip-unneeded -R .comment -g
-        #        ${PLAYDATE_GAME_NAME}.elf
-        #        -o ${PDCPP_STAGING_DIR}/Source/pdex.elf
-        #)
-
-        #add_custom_command(
-        #        TARGET ${PLAYDATE_GAME_NAME} POST_BUILD
-        #        COMMAND ${PDC} Source ${PLAYDATE_GAME_NAME}.pdx
-        #        WORKING_DIRECTORY ${PDCPP_STAGING_DIR}
-        #)
-
-        #set_property(
-        #        TARGET ${PLAYDATE_GAME_NAME} PROPERTY ADDITIONAL_CLEAN_FILES
-        #        ${PDCPP_STAGING_DIR}/${PLAYDATE_GAME_NAME}.pdx
-        #)
-
     else ()
         add_library(${PLAYDATE_GAME_NAME} SHARED)
 
@@ -67,11 +39,11 @@ function(add_playdate_library PLAYDATE_GAME_NAME)
                 set_property(TARGET ${PLAYDATE_GAME_NAME} PROPERTY XCODE_SCHEME_EXECUTABLE ${SDK}/bin/Playdate\ Simulator.app)
             endif()
 
-            add_custom_command(
-                    TARGET ${PLAYDATE_GAME_NAME} POST_BUILD
-                    COMMAND ${CMAKE_COMMAND} -E copy
-                    ${CMAKE_CURRENT_BINARY_DIR}/${BUILD_SUB_DIR}lib${PLAYDATE_GAME_NAME}.dylib
-                    ${PDCPP_STAGING_DIR}/Source/pdex.dylib)
+            # add_custom_command(
+             #       TARGET ${PLAYDATE_GAME_NAME} POST_BUILD
+             #       COMMAND ${CMAKE_COMMAND} -E copy
+             #       ${CMAKE_CURRENT_BINARY_DIR}/${BUILD_SUB_DIR}lib${PLAYDATE_GAME_NAME}.dylib
+             #       ${PDCPP_STAGING_DIR}/Source/pdex.dylib)
 
         elseif(UNIX)
             add_custom_command(
@@ -83,15 +55,6 @@ function(add_playdate_library PLAYDATE_GAME_NAME)
             message(FATAL_ERROR "Platform not supported!")
         endif()
 
-        set_property(
-                TARGET ${PLAYDATE_GAME_NAME} PROPERTY ADDITIONAL_CLEAN_FILES
-                ${PDCPP_STAGING_DIR}/${PLAYDATE_GAME_NAME}.pdx
-        )
-
-        add_custom_command(
-                TARGET ${PLAYDATE_GAME_NAME} POST_BUILD
-                COMMAND ${PDC} ${PDCPP_STAGING_DIR}/Source
-                ${PDCPP_STAGING_DIR}/${PLAYDATE_GAME_NAME}.pdx)
     endif()
 
     target_link_libraries(${PLAYDATE_GAME_NAME} PUBLIC pdcpp_core)
